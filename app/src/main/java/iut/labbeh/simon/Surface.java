@@ -15,7 +15,7 @@ public class Surface extends SurfaceView
         super(context);
         sh = getHolder();
         sh.addCallback(this);
-        paint.setColor(Color.BLUE);
+        paint.setColor(Color.GREEN);
         paint.setStyle(Paint.Style.FILL);
     }
     public void surfaceCreated(SurfaceHolder holder) {
@@ -27,20 +27,21 @@ public class Surface extends SurfaceView
             J B
         */
 
-        canvas.drawColor(Color.GREEN);
-        canvas.drawCircle(100, 200, 50, paint);
+        paint.setColor(Color.GREEN);
+        canvas.drawRect(100,1000,400,500, paint);
 
-        canvas.drawColor(Color.RED);
-        //canvas.drawRect();
+        paint.setColor(Color.RED);
+        canvas.drawRect(200,1000,1300,500, paint);
 
-        canvas.drawColor(Color.YELLOW);
-        canvas.drawColor(Color.BLUE);
+
+
 
         sh.unlockCanvasAndPost(canvas);
     }
-    public void surfaceChanged(SurfaceHolder holder, int format, int width,
-                               int height) {
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+
     }
     public void surfaceDestroyed(SurfaceHolder holder) {
+
     }
 }
