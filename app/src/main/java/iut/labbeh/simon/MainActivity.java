@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.view.SurfaceView;
 
 public class MainActivity extends AppCompatActivity {
+    /**
+     * Instance de sound manager pour jouer des bruitages
+     * */
     SoundManager sm;
 
     @Override
