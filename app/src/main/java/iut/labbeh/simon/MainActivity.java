@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     /**
@@ -29,8 +30,27 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if(event.getAction() == MotionEvent.ACTION_DOWN)
+        float x = event.getX();
+        float y = event.getY();
+
+        /*
+        if(this.x1 < this.x2 && this.y1 < this.y2)
+				g.drawRect(this.x1+5, this.y1+5, this.x2-this.x1, this.y2-this.y1);
+
+			else if(this.x1 > this.x2 && this.y1 > this.y2)
+				g.drawRect(this.x2+5, this.y2+5, this.x1-this.x2, this.y1-this.y2);
+
+			else if(this.x1 < this.x2 && this.y1 > this.y2)
+				g.drawRect(this.x1+5, this.y2+5, this.x2-this.x1, this.y1-this.y2);
+
+			else if(this.x1 > this.x2 && this.y1 < this.y2)
+				g.drawRect(this.x2+5, this.y1+5, this.x1-this.x2, this.y2-this.y1);
+        */
+
+        if(event.getAction() == MotionEvent.ACTION_DOWN){
             sm.playSound(1);
+            Toast.makeText(this, String.format("%s %s", x, y), Toast.LENGTH_SHORT).show();
+        }
 
         return true;
     }
