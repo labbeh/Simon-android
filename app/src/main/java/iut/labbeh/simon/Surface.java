@@ -31,7 +31,13 @@ public class Surface extends SurfaceView
         canvas.drawRect(100,1000,400,500, paint);
 
         paint.setColor(Color.RED);
-        canvas.drawRect(200,1000,1300,500, paint);
+        canvas.drawRect(1000,2000,1300,1000, paint);
+
+        paint.setColor(Color.YELLOW);
+        canvas.drawRect(300,300,600,600, paint);
+
+        paint.setColor(Color.BLUE);
+        canvas.drawRect(700,2000,200,1000, paint);
 
 
 
