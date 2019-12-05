@@ -23,24 +23,22 @@ public class Surface extends SurfaceView
 
         // couleurs des rectangles:
         /*
-            V R
-            J B
+             V
+            B R
+             J
         */
 
         paint.setColor(Color.GREEN);
-        canvas.drawRect(300,1000,1000,500, paint);
+        canvas.drawRect(250,200,450,400, paint);
 
         paint.setColor(Color.RED);
-        canvas.drawRect(1000,2000,1300,1000, paint);
+        canvas.drawRect(450,400,650,600, paint);
 
         paint.setColor(Color.YELLOW);
-        canvas.drawRect(300,300,600,600, paint);
+        canvas.drawRect(250,600,450,800, paint);
 
         paint.setColor(Color.BLUE);
-        canvas.drawRect(250,2000,-300,1000, paint);
-
-
-
+        canvas.drawRect(50,400,250,600, paint);
 
         sh.unlockCanvasAndPost(canvas);
     }
