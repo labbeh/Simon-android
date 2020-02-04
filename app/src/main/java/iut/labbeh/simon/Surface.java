@@ -11,18 +11,23 @@ import android.widget.Toast;
 
 import static java.lang.Thread.*;
 
-public class Surface extends SurfaceView
-        implements SurfaceHolder.Callback {
+public class Surface extends SurfaceView implements SurfaceHolder.Callback {
     private SurfaceHolder sh;
     private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
     private GamePlay gp;
+    private DessinJeu dj;
 
     public Surface(Context context) {
         super(context);
-        gp = new GamePlay(getContext());
+
+
         sh = getHolder();
         sh.addCallback(this);
+
+        dj = new DessinJeu(sh);
+
+        gp = new GamePlay(getContext(), dj);
         paint.setColor(Color.GREEN);
         paint.setStyle(Paint.Style.FILL);
     }
@@ -39,6 +44,15 @@ public class Surface extends SurfaceView
         return (a << 24) | (r << 16) | (g << 8) | b;
     }
 
+   /* private static int darkerColor(int color){
+        float ratio = 1.0f- 0.5f;
+        int a = (color >> 24) & 0xFF;
+        int r = (int) (((color >> 16) & 0xFF) * ratio);
+        int g = (int) (((color >> 8) & 0xFF) * ratio);
+        int b = (int) ((color & 0xFF) * ratio);
+        return (a << 24) | (r << 16) | (g << 8) | b;
+    }
+
     public void surfaceCreated(SurfaceHolder holder) {
         Canvas canvas = sh.lockCanvas();
         canvas.drawColor(Color.BLACK);
@@ -50,7 +64,7 @@ public class Surface extends SurfaceView
              J
         */
 
-        paint.setColor(Color.GREEN);
+       /* paint.setColor(Color.GREEN);
         canvas.drawRect(250,200,450,400, paint);
 
         paint.setColor(Color.RED);
@@ -65,32 +79,30 @@ public class Surface extends SurfaceView
         sh.unlockCanvasAndPost(canvas);
     }
 
-    /*public void afficherSurface(){
+    protected void afficheCanvas(float x,float y){
+        int [] couleur = {darkerColor(Color.BLUE), darkerColor(Color.RED),darkerColor(Color.YELLOW),darkerColor(Color.GREEN)};
+        if (x!=0 && y!=0)
+            switch (determineRectangle(x,y)){
+                case 0: couleur[0] = Color.BLUE;break;
+                case 1: couleur[2] = Color.YELLOW;break;
+                case 2: couleur[1] = Color.RED;break;
+                case 3: couleur[3] = Color.GREEN;
+            }
         Canvas canvas = sh.lockCanvas();
         canvas.drawColor(Color.BLACK);
+        paint.setColor(couleur[0]);
+        canvas.drawRect(0, 0, sizeX/2,sizeY/2, paint);
+        paint.setColor(couleur[1]);
+        canvas.drawRect(0, sizeY/2, sizeX/2,sizeY, paint);
+        paint.setColor(couleur[2]);
+        canvas.drawRect(sizeX/2, 0, sizeX,sizeY/2, paint);
+        paint.setColor(couleur[3]);
+        canvas.drawRect(sizeX/2, sizeY/2, sizeX,sizeY, paint);
+        sh.unlockCanvasAndPost(canvas);
+    }
 
-        // couleurs des rectangles:
-        /*
-             V
-            B R
-             J
 
-
-        paint.setColor(darkerColor(Color.GREEN));
-        canvas.drawRect(250,200,450,400, paint);
-
-        paint.setColor(darkerColor(Color.RED));
-        canvas.drawRect(450,400,650,600, paint);
-
-        paint.setColor(darkerColor(Color.YELLOW));
-        canvas.drawRect(250,600,450,800, paint);
-
-        paint.setColor(darkerColor(Color.BLUE));
-        canvas.drawRect(50,400,250,600, paint);
-
-    }*/
-
-    public void afficherCanvas(int place) {
+    /*public void afficherCanvas(int place) {
         int[] couleurs = {
                 darkerColor(Color.BLUE),
                 darkerColor(Color.RED ),
@@ -128,6 +140,40 @@ public class Surface extends SurfaceView
         if(x>450) return 2;
         if(y<600) return 3;
         return 1;
+    }*/
+
+    /*protected void AfficheCanvas(int place){
+        int [] couleur = {darkerColor(Color.BLUE), darkerColor(Color.RED),darkerColor(Color.YELLOW),darkerColor(Color.GREEN)};
+        if (place>=0)
+            switch (place){
+                case 0: couleur[0] = Color.BLUE;break;
+                case 1: couleur[2] = Color.YELLOW;break;
+                case 2: couleur[1] = Color.RED;break;
+                case 3: couleur[3] = Color.GREEN;
+            }
+        Canvas canvas = sh.lockCanvas();
+        canvas.drawColor(Color.BLACK);
+        paint.setColor(couleur[0]);
+        canvas.drawRect(0, 0, sizeX/2,sizeY/2, paint);
+        paint.setColor(couleur[1]);
+        canvas.drawRect(0, sizeY/2, sizeX/2,sizeY, paint);
+        paint.setColor(couleur[2]);
+        canvas.drawRect(sizeX/2, 0, sizeX,sizeY/2, paint);
+        paint.setColor(couleur[3]);
+        canvas.drawRect(sizeX/2, sizeY/2, sizeX,sizeY, paint);
+        sh.unlockCanvasAndPost(canvas);
+    }
+
+    protected int determineRectangle(float x,float y ){
+        if (x<sizeX/2 )
+            if (y<sizeY/2) return 0;
+            else return 2;
+        if (y<sizeY/2) return 1;
+        return 3;
+    }*/
+
+    public void surfaceCreated(SurfaceHolder holder){
+        dj.AfficheCanvas(0,0);
     }
 
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
@@ -148,17 +194,13 @@ public class Surface extends SurfaceView
         // bleu : 156 659
 
         if(event.getAction() == MotionEvent.ACTION_DOWN){
-            //sm.playSound(1);
-            //Toast.makeText(this.getContext(), String.format("%s %s", x, y), Toast.LENGTH_SHORT).show();
-            String s = Integer.toString(determineRectangle(x, y));
-            Toast.makeText(this.getContext(), s, Toast.LENGTH_SHORT).show();
-            //afficherSurface();
-            afficherCanvas(Integer.parseInt(s));
-            try {
-                sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            dj.AfficheCanvas(x,y);
+        }
+        if(event.getAction() == MotionEvent.ACTION_UP){
+            dj.AfficheCanvas(x,y);
+            if(gp.etat.equals("off"))
+                gp.initSequence();
+            else gp.Play(event);
         }
 
         return true;
